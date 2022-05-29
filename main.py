@@ -26,17 +26,17 @@ def get_serialized_drinks(drinks):
         na_values=None,
         keep_default_na=False,). \
         to_dict(orient='records')
-    drinks_serialized = defaultdict(list)
+    serialized_drinks = defaultdict(list)
 
     for drink in drinks_from_xlsx:
-        drinks_serialized[drink['Категория']].append(drink)
-    return drinks_serialized
+        serialized_drinks[drink['Категория']].append(drink)
+    return serialized_drinks
 
 
 def main():
     load_dotenv()
-    drinks = os.getenv('DRINKS', default='drinks.xlsx')
-    drinks_serialized = get_serialized_drinks(drinks)
+    path_of_the_file_with_drinks = os.getenv('DRINKS', default='drinks.xlsx')
+    drinks_serialized = get_serialized_drinks(path_of_the_file_with_drinks)
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
