@@ -8,14 +8,16 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from dotenv import load_dotenv
 
 
-winery_age = (datetime.datetime.now() - datetime.datetime(1920, 1, 1)). \
-    days // 365
-if winery_age % 10 in range(2, 5):
-    year_description = 'года'
-elif winery_age % 10 == 1:
-    year_description = 'год'
-else:
-    year_description = 'лет'
+def get_winery_age():
+    winery_age = (datetime.datetime.now() - datetime.datetime(1920, 1, 1)). \
+        days // 365
+    if winery_age % 10 in range(2, 5):
+        year_description = 'года'
+    elif winery_age % 10 == 1:
+        year_description = 'год'
+    else:
+        year_description = 'лет'
+    return winery_age, year_description
 
 
 def get_serialized_drinks(drinks):
@@ -40,6 +42,7 @@ def main():
         autoescape=select_autoescape(['html', 'xml'])
     )
     template = env.get_template('template.html')
+    winery_age, year_description = get_winery_age()
     rendered_page = template.render(
         winery_age=winery_age,
         year_description=year_description,
